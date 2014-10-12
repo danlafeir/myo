@@ -1,17 +1,22 @@
-scriptId = 'com.thalmic.scripts.spotify'
+scriptId = 'com.thalmic.scripts.applicationToggle'
 
--- Spotify Controls
+-- Controls
 
-function nextSong()
-    myo.keyboard("right_arrow", "press", "control")
+function nextApplication()
+    myo.keyboard("right_arrow", "press")
 end
 
-function prevSong()
-    myo.keyboard("left_arrow", "press", "control")
+function prevApplication()
+    myo.keyboard("left_arrow", "press", "shift")
 end
 
-function playPause()
-    myo.keyboard("space", "press")
+function selectApplication()
+    myo.keyboard("left_alt", "up")
+end
+
+function openApplicationToggle()
+    myo.keyboard("left_alt", "down")
+    myo.keyboard("tab", "press")
 end
 
 -- Helpers
@@ -62,8 +67,13 @@ function onPoseEdge(pose, edge)
 
     if pose == "fingersSpread" then 
         if unlocked and edge == "on" then
-            playPause()
-            extendUnlock()
+            openApplicationToggle()
+        end
+    end
+
+    if pose == "fist" then 
+        if unlocked and edge == "on" then
+            selectApplication()
         end
     end
 
@@ -75,10 +85,10 @@ function onPoseEdge(pose, edge)
             pose = conditionallySwapWave(pose)
 
             -- Determine direction based on the pose.
-            if pose == "waveOut" then
-                nextSong()
+            if pose == "waveIn" then
+                nextApplication()
             else
-                prevSong()
+                prevApplication()
             end
 
             extendUnlock()
@@ -104,23 +114,15 @@ function onPeriodic()
 end
 
 function onForegroundWindowChange(app, title)
-    -- Here we decide if we want to control the new active app.
-    myo.debug("onForegroundWindowChange: " .. app .. ", " .. title)
-    if title == string.match(title, '.*Spotify.*') then
-        myo.debug("You are in control")
-        return true
-    end
-    return false
+    -- Here we want the process running for any application but have the lowest priority
+    return true
 end
 
 function activeAppName()
     -- Return the active app name determined in onForegroundWindowChange
-    return "spotify"
+    return "applicationToggle"
 end
 
 function onActiveChange(isActive)
-    myo.debug("onActiveChange")
-    if not isActive then
-        unlocked = false
-    end
+    --myo.debug("onActiveChange")
 end
