@@ -68,12 +68,14 @@ function onPoseEdge(pose, edge)
     if pose == "fingersSpread" then 
         if unlocked and edge == "on" then
             openApplicationToggle()
+            extendUnlock()
         end
     end
 
     if pose == "fist" then 
         if unlocked and edge == "on" then
             selectApplication()
+            extendUnlock()
         end
     end
 
@@ -85,7 +87,7 @@ function onPoseEdge(pose, edge)
             pose = conditionallySwapWave(pose)
 
             -- Determine direction based on the pose.
-            if pose == "waveIn" then
+            if pose == "waveOut" then
                 nextApplication()
             else
                 prevApplication()
