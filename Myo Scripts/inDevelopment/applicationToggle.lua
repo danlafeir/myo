@@ -21,7 +21,7 @@ function openApplicationToggle()
     myo.keyboard("tab", "press")
 end
 
--- Implement Callbacks
+-- Implement Callback
 
 function ApplicationToggle.onPoseEdge(pose, edge, lock, utility)
     -- Unlock
@@ -72,3 +72,5 @@ function ApplicationToggle.onPoseEdge(pose, edge, lock, utility)
         end
     end
 end
+
+return ApplicationToggle
